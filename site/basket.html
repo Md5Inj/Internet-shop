@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>"Пекарня" - интернет-магазин цифровой техники</title>
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+	<link rel="stylesheet" type="text/css" href="style/fa.css">
+	<link rel="stylesheet" type="text/css" href="style/bx.css">
+	<link rel="stylesheet" type="text/css" href="js/ui/jquery-ui.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="style/nprogress.css">
+	<script src="js/nprogress.js"></script>
+	<script type="text/javascript" src="js/jq.js"></script>
+	<script type="text/javascript" src="js/ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script> 
+	<script type="text/javascript" src="js/slider.js"></script>
+	<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+<div id="wrap">
+	<header>
+	<div id="sign-in">
+		<div>
+			<div>
+				<span class="fa-stack fa-lg" id="close">
+				  <i class="fa fa-circle fa-stack-2x"></i>
+				  <i class="fa fa-close fa-stack-1x fa-inverse"></i>
+				</span>
+				<h1 v-if="ok" class="logText">Вход</h1>
+				<h1 v-else class="logText">Регистрация</h1>
+				<input name="email" placeholder="Ваш email" id="email">
+				<input type="password" placeholder="Ваш пароль" name="password" id="password">
+				<button v-if="ok" v-on:click="login" id="in">Войти</button>
+				<button v-else v-on:click="register" id="newUser">Зарегестрироваться</button>
+			</div>
+		</div>
+	</div>
+		<div id="user">
+			<div>
+				<ul id="etc">
+					<li>
+						<a href="">О компании</a>
+					</li>
+					<li>
+						<a href="">Доставка</a>
+					</li>
+					<li>
+						<a href="">Оплата</a>
+					</li>
+					<li>
+						<a href="">Товары в рассрочку</a>
+					</li>
+					<li>
+						<a href="">Скидки, суперцены</a>
+					</li>
+				</ul>
+			</div>
+			<div class="panel">
+				<template v-if="!auth">
+					<div id="my" v-on:click="ok=false">
+						<i class="fa fa-user-plus" aria-hidden="true"></i>
+						<a>{{ settings.register }}</a>
+					</div>
+					<div id="login" v-on:click="ok=true">
+						<span class="fa-stack fa-lg">
+						  <i class="fa fa-circle fa-stack-2x"></i>
+						  <i class="fa fa-sign-in fa-stack-1x fa-inverse"></i>
+						</span>
+						<a>{{ settings.login }}</a>
+					</div>
+				</template>
+				<template v-else>
+					<template v-if="admin == 'true'">
+						<div id="adminSettings">
+							<i class="fa fa-cogs"></i>
+							<a>Настройки сайта</a>
+						</div>
+					</template>
+					<div id="userPanel">
+						<ul>
+							<li>
+								<span class="fa-stack fa-lg">
+								  <i class="fa fa-circle fa-stack-2x"></i>
+								  <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+								</span>
+								<a> {{ userName }}</a>
+								<i class="fa fa-caret-down"></i>
+								<ul class="dropdown">
+								  <li><a v-bind:href="profileURL">Мой профиль</a></li>
+								  <li><a v-bind:href="basketURL">Корзина</a></li>
+								  <li><a v-bind:href="logoutURL">Выход</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</template>
+			</div>	
+		</div>
+	</header>
+		<header>
+			<div id="menu">
+				<div id="logo"><a href="/">{{ settings.title }}</a></div>
+				<div class="search">
+					<input type="text" maxlength="150" placeholder="Введите поисковый запрос">
+					<i class="fa fa-search" id="search"></i>
+				</div>
+				<div id="basket">
+					<a v-bind:href="basketURL"><button><i class="fa fa-shopping-basket"></i> {{ settings.basket }}</button></a>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="">Персональные компьютеры</a></li>
+					<li><a href="">Ноутбуки</a></li>
+					<li><a href="">Android</a></li>
+					<li><a href="">Iphone</a></li>
+					<li><a href="">Веб-камеры</a></li>
+					<li><a href="">Мышки</a></li>
+					<li><a href="">Клавиатуры</a></li>
+					<li><a href="">Наушники</a></li>
+					<li><a href="">Аккумуляторы</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<main id="basketForm">
+			<div class="itemInBasket" v-for="item in bGoods" v-bind:gid="item.goodID"> <!-- good id -->
+				<div class="img"><img class="basketGoodImg" /></div>
+				<b><span class="goodName"></span></b>
+				<b>Количество: </b><span>{{ item.count }}</span>
+				<i class="fa fa-times-circle removeItem"></i>
+			</div>
+			<button id="submitBasket">Подтвердить корзину</button>
+		</main>
+
+		<footer>
+			<div><a>© 2004–2018 21vek.by</a></div>
+			<div><a>ООО «Триовист», юр.адрес: 220020, Минск, пр. Победителей, 100, оф. 203</a></div>
+			<div><a>В торговом реестре с 23 июня 2010г. УНП 190806803.
+Регистрация №190806803, 22.02.2007, Мингорисполком.</a></div>
+		</footer>
+	</div>
+</body>
+</html>
